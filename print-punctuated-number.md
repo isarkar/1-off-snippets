@@ -13,5 +13,6 @@ For a positive number, there's no need to output the "+".
 Assumptions:
 ------------
 1. You can make any assumptions about the width of the input integer (int32, int64, anything that you wish).
-2. Use any language that you are comfortable with.
+2. Use any programmable language that you are comfortable with.
 3. The object of the exercise is to make sure you can explain the algorithm you are using to solve the problem -- so, just picking an existing library function to do the conversion is not an acceptable answer.
+4. A few unit tests to exercise your code is an added bonus.
