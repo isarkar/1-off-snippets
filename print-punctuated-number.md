@@ -1,5 +1,5 @@
 # Problem
-## Given an integer, output a string with commas separating the thousands.
+## Given a signed integer, output a string with commas separating the thousands.
 
 Question:
 ---------
