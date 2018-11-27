@@ -1,0 +1,68 @@
+using System;
+using System.Text;
+					
+public class Program
+{
+	public static void Main()
+	{	
+		// Minimum int32
+		Console.WriteLine(convertInteger(-2147483648));
+		
+		// Max int32
+		Console.WriteLine(convertInteger(2147483647));
+		
+		// Other test cases
+		Console.WriteLine(convertInteger(0));
+		Console.WriteLine(convertInteger(12));
+		Console.WriteLine(convertInteger(123));
+		Console.WriteLine(convertInteger(1234));
+		Console.WriteLine(convertInteger(12345));
+		Console.WriteLine(convertInteger(12345567));
+		Console.WriteLine(convertInteger(-12));
+		Console.WriteLine(convertInteger(-123));
+		Console.WriteLine(convertInteger(-1234));
+		Console.WriteLine(convertInteger(-12345));
+		Console.WriteLine(convertInteger(-12345678));
+	}
+	
+
+	/// <summary> 
+	/// Converts an int32 value into a string including commas (,) and negative sign (-) if appropriate.
+	/// Has O(N) complexity
+	/// Only valid for int32 numbers.
+    /// </summary> 
+	public static string convertInteger(int input){	
+			StringBuilder result = new StringBuilder();	
+			Boolean negative = false;
+		
+			// Removing negative sign so it does not interfere with commas
+			if(input < 0){				
+				// Since int32 range is -2147483648 to 2147483647 you cannot multiply by -1 and get correct output
+				if(input == -2147483648)
+					return "-2,147,483,648";
+				input = input * - 1;
+				negative = true;
+			}
+		
+			// iterate backwards through string and insert commas
+			String str = input.ToString();
+			int count = 0;
+			for(int i = str.Length - 1; i >= 0; i--){
+				if(count % 3 == 0 & i < str.Length & count != 0)
+					result.Insert(0, ',');
+				result.Insert(0, str[i]);
+				count++;
+
+			}
+			// Add negative sign back in
+			if(negative)
+				result.Insert(0, '-');
+			return result.ToString();
+	}
+	
+	// Using libraries
+	public static string convertIntLib(int input){
+			String str = input.ToString("#,##0");
+			return str;
+	}
+}
