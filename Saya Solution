@@ -5,6 +5,10 @@ public class Program
 {
 	public static void Main()
 	{	
+		
+		/// ConvertInt tests///////////////////////////////
+		Console.WriteLine("ConvertInt Tests");
+		
 		// Minimum int32
 		Console.WriteLine(convertInteger(-2147483648));
 		
@@ -17,12 +21,40 @@ public class Program
 		Console.WriteLine(convertInteger(123));
 		Console.WriteLine(convertInteger(1234));
 		Console.WriteLine(convertInteger(12345));
-		Console.WriteLine(convertInteger(12345567));
+		Console.WriteLine(convertInteger(123456789));
 		Console.WriteLine(convertInteger(-12));
 		Console.WriteLine(convertInteger(-123));
 		Console.WriteLine(convertInteger(-1234));
 		Console.WriteLine(convertInteger(-12345));
-		Console.WriteLine(convertInteger(-12345678));
+		Console.WriteLine(convertInteger(-123456789));
+		
+		
+		/// ConvertString tests////////////////////////////
+		Console.WriteLine("ConvertString Tests");
+		
+		// Minimum int32
+		Console.WriteLine(convertString("-2147483648"));
+		
+		// Max int32
+		Console.WriteLine(convertString("2147483647"));
+		
+		// Other test cases
+		Console.WriteLine(convertString("0"));
+		Console.WriteLine(convertString("12"));
+		Console.WriteLine(convertString("123"));
+		Console.WriteLine(convertString("1234"));
+		Console.WriteLine(convertString("12345"));
+		Console.WriteLine(convertString("123456789"));
+		Console.WriteLine(convertString("-12"));
+		Console.WriteLine(convertString("-123"));
+		Console.WriteLine(convertString("-1234"));
+		Console.WriteLine(convertString("-12345"));
+		Console.WriteLine(convertString("-123,456,789"));
+		Console.WriteLine(convertString("-12"));
+		Console.WriteLine(convertString("-123"));
+		Console.WriteLine(convertString("1,234"));
+		Console.WriteLine(convertString("12,345"));
+		Console.WriteLine(convertString("-123,456,789"));
 	}
 	
 
@@ -30,39 +62,74 @@ public class Program
 	/// Converts an int32 value into a string including commas (,) and negative sign (-) if appropriate.
 	/// Has O(N) complexity
 	/// Only valid for int32 numbers.
-    /// </summary> 
+    	/// </summary> 
 	public static string convertInteger(int input){	
 			StringBuilder result = new StringBuilder();	
-			Boolean negative = false;
+			Boolean negative = false;		
+		
+			if (input == 0) return "0";
 		
 			// Removing negative sign so it does not interfere with commas
 			if(input < 0){				
 				// Since int32 range is -2147483648 to 2147483647 you cannot multiply by -1 and get correct output
-				if(input == -2147483648)
-					return "-2,147,483,648";
+				if(input == -2147483648) return "-2,147,483,648";
 				input = input * - 1;
 				negative = true;
 			}
 		
-			// iterate backwards through string and insert commas
-			String str = input.ToString();
-			int count = 0;
-			for(int i = str.Length - 1; i >= 0; i--){
-				if(count % 3 == 0 & i < str.Length & count != 0)
-					result.Insert(0, ',');
-				result.Insert(0, str[i]);
+			int count = 0;		
+    		while (input > 0) { 
+			// Gets place
+        		int digit = input % 10;
+			// Gets the actual value
+        		input = input / 10;
+			// Adds commas
+			if(count % 3 == 0 & count != 0)
+				result.Insert(0, ',');
+				result.Insert(0, digit);
 				count++;
+    		}
 
-			}
 			// Add negative sign back in
 			if(negative)
 				result.Insert(0, '-');
 			return result.ToString();
 	}
 	
-	// Using libraries
-	public static string convertIntLib(int input){
-			String str = input.ToString("#,##0");
-			return str;
+	/// <summary> 
+	/// Converts a string representing an int32 number into an integer. String can include commas and be negative.
+	/// Only valid for int32 numbers.
+    	/// </summary> 
+	public static int convertString(String input){	
+			int digit = 0;
+			int ascii = 48;
+			int result = 0;
+
+			Boolean negative = false;
+			int place;
+			for(int i = input.Length - 1; i >= 0; i--){
+				// Remove sign
+				if(input[i] == '-'){
+					negative = true;
+					continue;
+				};
+				// Remove commas
+				if(input[i] == ','){
+					input = input.Remove(i, 1);
+					continue;
+				};
+				digit = input[i];
+				// Convert from char to number
+        			digit = digit  - ascii;
+				// Get place
+				place = (input.Length - 1) - i;
+				// Add the correct value based on its place
+				result = result + (digit * (int) Math.Pow(10, place));
+    		}
+			if(negative)
+				 return result * -1;
+		
+		return result;
+
 	}
 }
